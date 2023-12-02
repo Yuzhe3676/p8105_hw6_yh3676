@@ -1,0 +1,6 @@
+---
+title: "p8105_hw6_yh3676"
+author: "Yuzhe Hu"
+date: "2023-12-02"
+output: github_document
+---
