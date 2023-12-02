@@ -179,9 +179,9 @@ boot_results |>
   labs(title = "Distribution of log(beta1_hat * beta2_hat)")
 ```
 
-* The $\hat{β}_1 * \hat{β}_2$ distribution is centered around -5 but left-skewed.
+* The $log (\hat{β}_1 * \hat{β}_2)$ distribution is centered around -5 but left-skewed.This might because many outliers are included in the bootstrap sample.
 
-Provide 95% confidence interval for $\hat{r}^2$ and $log (\hat{β}_1 * \hat{β}_2)$ using 5000 bootstrap samples.
+Provide 95% confidence interval for $\hat{r}^2$ and $log (\hat{β}_1 * \hat{β}_2)$ using 5000 bootstrap samples
 
 ```{r}
 # CI for R_square
@@ -199,5 +199,12 @@ boot_results |>
     log_b1b2_CI_lower = quantile(log_b1b2, 0.025),
     log_b1b2_CI_upper = quantile(log_b1b2, 0.975)) |>
   knitr::kable(digits = 3)
+```
+
+### Problem 3
+
+```{r}
+birthwt_df = 
+  read_csv("data/birthweight.csv")
 ```
 
