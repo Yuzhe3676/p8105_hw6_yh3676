@@ -241,5 +241,17 @@ broom::tidy(stepwise_model) |>
 
 * The selected predictors are: `babysex`, `bhead`, `blength`, `delwt`, `fincome`, `gaweeks`, `mheight`, `mrace`, `parity`, `ppwt`, `smoken`.
 
-Plot of model residuals against fitted value
+Plot of model residuals against fitted value.
+
+```{r}
+birthwt_df |>
+  add_predictions(stepwise_model) |>
+  add_residuals(stepwise_model) |>
+  ggplot(aes(x = pred, y = resid)) + 
+  geom_point() +
+  labs(title = "Residuals vs Fitted Values ") + 
+  xlab("Fitted Values") + 
+  ylab("Residuals")
+```
+
 
