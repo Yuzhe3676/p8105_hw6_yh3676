@@ -181,5 +181,23 @@ boot_results |>
 
 * The $\hat{β}_1 * \hat{β}_2$ distribution is centered around -5 but left-skewed.
 
+Provide 95% confidence interval for $\hat{r}^2$ and $log (\hat{β}_1 * \hat{β}_2)$ using 5000 bootstrap samples.
 
+```{r}
+# CI for R_square
+boot_results |>
+  summarize(
+    R_squared_CI_lower = quantile(r_squared, 0.025),
+    R_squared_CI_upper = quantile(r_squared, 0.975)) |>
+  knitr::kable(digits = 3)
+```
+
+```{r}
+# CI for log(beta1_hat * beta2_hat)
+boot_results |>
+  summarize(
+    log_b1b2_CI_lower = quantile(log_b1b2, 0.025),
+    log_b1b2_CI_upper = quantile(log_b1b2, 0.975)) |>
+  knitr::kable(digits = 3)
+```
 
