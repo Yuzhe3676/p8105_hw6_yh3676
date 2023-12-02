@@ -203,8 +203,43 @@ boot_results |>
 
 ### Problem 3
 
-```{r}
+Load and clean the data for regression analysis (i.e. convert numeric to factor where appropriate, check for missing data, etc.)
+
+```{r, message=FALSE}
 birthwt_df = 
-  read_csv("data/birthweight.csv")
+  read_csv("data/birthweight.csv") |>
+  janitor::clean_names() |>
+#convert some variables' type into factor
+  mutate(babysex = as.factor(babysex),
+         frace = as.factor(frace),
+         malform = as.factor(malform),
+         mrace = as.factor(mrace)) |>
+  select(bwt,everything())
 ```
+
+```{r}
+#check for missing data
+is.na(birthwt_df) |> 
+colSums()
+```
+
+First, establish a linear regression model with birthweight as the response variable, and use all the other variables as covariates. 
+
+```{r}
+full_fit = lm(bwt ~., data = birthwt_df) 
+broom::tidy(full_fit) |> 
+  knitr::kable()
+```
+
+Then, select predictors through the backward stepwise method.
+
+```{r}
+stepwise_model = MASS::stepAIC(full_fit, trace = FALSE, direction = "backward")
+broom::tidy(stepwise_model) |> 
+  knitr::kable()
+```
+
+* The selected predictors are: `babysex`, `bhead`, `blength`, `delwt`, `fincome`, `gaweeks`, `mheight`, `mrace`, `parity`, `ppwt`, `smoken`.
+
+Plot of model residuals against fitted value
 
