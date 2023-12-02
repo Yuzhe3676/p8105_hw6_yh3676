@@ -259,16 +259,13 @@ birthwt_df |>
 Then compare `my model` to two others and make this comparison in terms of the cross-validated prediction error.
 
 * Model 1: use length at birth and gestational age as predictors (main effects only).
-
 * Model 2: use head circumference, length, sex, and all interactions (including the three-way interaction) between these.
 
-To be specific, the three models will have the following form as:
+To be specific, the three models will have the following form:
 
-* my_model: lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + mheight + mrace + parity + ppwt + smoken)
-
-* model_1: lm(bwt ~ blength + gaweeks)
-
-* model_2: lm(bwt ~ bhead * blength * babysex)
+* My model: lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + mheight + mrace + parity + ppwt + smoken)
+* Model 1: lm(bwt ~ blength + gaweeks)
+* Model 2: lm(bwt ~ bhead * blength * babysex)
 
 ```{r}
 cv_df = 
@@ -318,5 +315,5 @@ outcome |>
   )
 ```
 
-* This violin plot provides a visual comparison of the RMSE distribution across the three different models that established previously. To determine the superior model, the criterion we adapted here is selecting the model that demonstrates lower RMSE values consistently across different cross-validation folds. According to the graph,  `my model` has lower RSME on average compared to `model 1` and `model 2`, suggesting that `my model` has the best predictive accuracy among the three models. 
+* This violin plot provides a visual comparison of the RMSE distribution across the three different models that were established previously. To determine the superior model, the criterion we adopted here is selecting the model that demonstrates lower RMSE values consistently across different cross-validation folds. According to the graph, `my model` has lower RMSE on average compared to `model 1` and `model 2`, suggesting that `my model` possesses the highest predictive accuracy among the three models.
 
