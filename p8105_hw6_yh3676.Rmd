@@ -206,10 +206,11 @@ boot_results |>
 Load and clean the data for regression analysis (i.e. convert numeric to factor where appropriate, check for missing data, etc.)
 
 ```{r, message=FALSE}
+# import data 
 birthwt_df = 
   read_csv("data/birthweight.csv") |>
   janitor::clean_names() |>
-#convert some variables' type into factor
+  #convert some variables' type into factor
   mutate(babysex = as.factor(babysex),
          frace = as.factor(frace),
          malform = as.factor(malform),
@@ -218,9 +219,10 @@ birthwt_df =
 ```
 
 ```{r}
-#check for missing data
+# check for missing data
 is.na(birthwt_df) |> 
-colSums()
+  colSums() 
+  # there is no missing data
 ```
 
 First, establish a linear regression model with birthweight as the response variable, and use all the other variables as covariates. 
@@ -254,10 +256,19 @@ birthwt_df |>
   ylab("Residuals")
 ```
 
-Then compare my model to two others:
+Then compare `my model` to two others and make this comparison in terms of the cross-validated prediction error.
 
-* One using length at birth and gestational age as predictors (main effects only)
-* One using head circumference, length, sex, and all interactions (including the three-way interaction) between these.
+* Model 1: use length at birth and gestational age as predictors (main effects only).
+
+* Model 2: use head circumference, length, sex, and all interactions (including the three-way interaction) between these.
+
+To be specific, the three models will have the following form as:
+
+* my_model: lm(bwt ~ babysex + bhead + blength + delwt + fincome + gaweeks + mheight + mrace + parity + ppwt + smoken)
+
+* model_1: lm(bwt ~ blength + gaweeks)
+
+* model_2: lm(bwt ~ bhead * blength * babysex)
 
 ```{r}
 cv_df = 
@@ -301,7 +312,11 @@ outcome |>
     names_prefix = "rmse_") |> 
   mutate(model = fct_inorder(model)) |> 
   ggplot(aes(x = model, y = rmse)) + 
-  geom_violin(aes(fill = model))
+  geom_violin(aes(fill = model)) +
+  labs(
+    title = "Violin plot of RMSE of the models "
+  )
 ```
 
+* This violin plot provides a visual comparison of the RMSE distribution across the three different models that established previously. To determine the superior model, the criterion we adapted here is selecting the model that demonstrates lower RMSE values consistently across different cross-validation folds. According to the graph,  `my model` has lower RSME on average compared to `model 1` and `model 2`, suggesting that `my model` has the best predictive accuracy among the three models. 
 
